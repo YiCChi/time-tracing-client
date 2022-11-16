@@ -1,3 +1,4 @@
 lint-staged.config.js
 .eslintrc.cjs
 next.config.mjs
+apollo
