@@ -91,6 +91,7 @@ module.exports = {
     '@typescript-eslint/prefer-regexp-exec': 'warn',
     '@typescript-eslint/promise-function-async': 'error',
     '@typescript-eslint/require-array-sort-compare': ['error', { ignoreStringArray: true }],
+    '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/return-await': 'error',
     '@typescript-eslint/sort-type-union-intersection-members': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
