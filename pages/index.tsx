@@ -1,41 +1,47 @@
-import { gql, useQuery } from '@apollo/client';
-import Link from 'next/link';
-import styles from '../styles/Home.module.css';
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+import type { ChangeEvent, FormEvent } from 'react';
+import { useState } from 'react';
 
-export const ALL_USERS_QUERY = gql`
-  query allUsers {
-    users {
-      id
-      name
-      age
+const LOGIN_QUERY = gql`
+  mutation login($userName: String!, $password: String!) {
+    login(loginUserInput: { userName: $userName, password: $password }) {
+      access_token
     }
   }
 `;
 
-export interface User {
-  id: number;
-  name: string;
-  age: number;
-}
+export default function Login() {
+  const router = useRouter();
+  const [user, setUser] = useState({ userName: '', password: '' });
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const [login, { error, loading }] = useMutation<{ login: { access_token: string } }>(LOGIN_QUERY);
 
-export default function Home() {
-  const { data, loading, error } = useQuery<{ users: Array<User> }>(ALL_USERS_QUERY);
+  const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setUser({ ...user, [e.currentTarget.name]: e.currentTarget.value });
+  };
 
-  if (error) return <div className={styles.container}>error</div>;
-  if (loading) return <div className={styles.container}>loading</div>;
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    void login({ variables: { ...user } }).then((res) => {
+      const accessToken = res.data?.login.access_token ?? '';
+
+      sessionStorage.setItem('accessToken', accessToken);
+      document.cookie = `accessToken=${accessToken}`;
+      void router.push('/client');
+    });
+  };
+
+  if (error) return <div>error</div>;
+  if (loading) return <div>loading</div>;
 
   return (
-    <div className={styles.container}>
-      {data?.users.map((user, index) => {
-        const { id, name, age } = user;
-
-        return <p key={index}>{`user id is ${id}, name is ${name}, age is ${age}`}</p>;
-      })}
-      <div>
-        <Link href='/ssg'>go to SSG page</Link>
-        <br />
-        <Link href='/ssr'>go to SSR page</Link>
-      </div>
-    </div>
+    <form onSubmit={onSubmit}>
+      <label>username</label>
+      <input type='text' name='userName' onChange={changeHandler} />
+      <label>password</label>
+      <input type='password' name='password' onChange={changeHandler} />
+      <button type='submit'>login</button>
+    </form>
   );
 }

@@ -1,12 +1,12 @@
-import type { NormalizedCacheObject } from '@apollo/client';
+import { ApolloLink, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, HttpLink, InMemoryCache, from } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { useMemo } from 'react';
-import { API_URL } from './constants';
+import { APOLLO_CONSTANTS } from './constants';
 
-let apolloClient: any;
+let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -17,15 +17,30 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log('[Network error]: ', networkError);
 });
 
-const httpLink = new HttpLink({
-  uri: API_URL, // Server URL (must be absolute)
-  credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+const httpLink = new HttpLink({ uri: APOLLO_CONSTANTS.apiUrl });
+
+const authLink = new ApolloLink((operation, forward) => {
+  operation.setContext((context: Record<string, any>) => {
+    const authorization =
+      typeof window === 'undefined'
+        ? `Bearer ${context[APOLLO_CONSTANTS.accessToken]}`
+        : `Bearer ${sessionStorage.getItem(APOLLO_CONSTANTS.accessToken)}`;
+
+    return {
+      headers: {
+        ...context.headers,
+        authorization,
+      },
+    };
+  });
+
+  return forward(operation);
 });
 
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: from([errorLink, httpLink]),
+    link: from([errorLink, authLink, httpLink]),
     cache: new InMemoryCache(),
   });
 }
