@@ -38,10 +38,10 @@ export default function Login() {
   return (
     <form onSubmit={onSubmit}>
       <label>username</label>
-      <input type='text' name='userName' onChange={changeHandler} />
+      <input type="text" name="userName" onChange={changeHandler} />
       <label>password</label>
-      <input type='password' name='password' onChange={changeHandler} />
-      <button type='submit'>login</button>
+      <input type="password" name="password" onChange={changeHandler} />
+      <button type="submit">login</button>
     </form>
   );
 }
