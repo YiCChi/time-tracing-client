@@ -21,7 +21,7 @@ export default function SSGHome(props: Props) {
       })}
       <div>check the terminal to confirm that data fetching run on node</div>
       <div>
-        <Link href='/client'>go to client page</Link>
+        <Link href="/client">go to client page</Link>
       </div>
     </div>
   );
