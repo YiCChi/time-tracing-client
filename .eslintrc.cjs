@@ -1,35 +1,20 @@
 module.exports = {
   plugins: ['@typescript-eslint'],
   extends: [
-    'next/core-web-vitals',
+    'plugin:@next/next/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:@typescript-eslint/strict',
-    'plugin:import/recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
     'prettier',
   ],
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
-  settings: {
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
-    },
-    'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
-        project: `./tsconfig.json`,
-      },
-      node: true,
-    },
-  },
   rules: {
-    'import/order': ['error', { alphabetize: { order: 'asc' } }],
-    'import/no-duplicates': 'error',
-    '@typescript-eslint/array-type': ['error', { default: 'generic' }],
     '@typescript-eslint/consistent-type-exports': 'error',
     '@typescript-eslint/consistent-type-imports': 'error',
     '@typescript-eslint/default-param-last': 'error',
@@ -44,7 +29,7 @@ module.exports = {
       },
       {
         selector: 'variable',
-        format: ['camelCase', 'UPPER_CASE'],
+        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
       },
       {
         selector: 'parameter',
@@ -68,7 +53,6 @@ module.exports = {
         format: ['camelCase', 'PascalCase'],
       },
     ],
-
     '@typescript-eslint/no-dupe-class-members': 'error',
     '@typescript-eslint/no-invalid-this': 'error',
     '@typescript-eslint/no-loop-func': 'error',
@@ -76,16 +60,11 @@ module.exports = {
     '@typescript-eslint/no-redundant-type-constituents': 'warn',
     '@typescript-eslint/no-require-imports': 'warn',
     '@typescript-eslint/no-shadow': 'error',
-    '@typescript-eslint/no-type-alias': [
-      'error',
-      { allowAliases: 'in-unions-and-intersections', allowLiterals: 'in-unions-and-intersections' },
-    ],
-    '@typescript-eslint/no-unnecessary-qualifier': 'warn',
     '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-use-before-define': 'error',
     '@typescript-eslint/no-useless-empty-export': 'warn',
-    '@typescript-eslint/parameter-properties': ['error', { allow: 'readonly' }],
+    '@typescript-eslint/parameter-properties': ['error', { prefer: 'parameter-property' }],
     '@typescript-eslint/prefer-enum-initializers': 'warn',
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/prefer-regexp-exec': 'warn',
