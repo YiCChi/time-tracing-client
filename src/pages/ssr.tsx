@@ -6,7 +6,7 @@ import type { User } from './client';
 import { ALL_USERS_QUERY } from './client';
 
 interface Props {
-  users: Array<User>;
+  users: User[];
 }
 
 export default function SSGHome(props: Props) {
@@ -30,7 +30,7 @@ export default function SSGHome(props: Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();
 
-  const res = await apolloClient.query<{ users: Array<User> }>({
+  const res = await apolloClient.query<{ users: User[] }>({
     query: ALL_USERS_QUERY,
     context: { accessToken: context.req.cookies['auth-token'] ?? '' },
   });

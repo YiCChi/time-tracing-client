@@ -39,7 +39,7 @@ export default function Home() {
     email: '',
   });
   const [createUser] = useMutation(CREATE_USER);
-  const { data, loading, error } = useQuery<{ users: Array<User> }>(ALL_USERS_QUERY, {
+  const { data, loading, error } = useQuery<{ users: User[] }>(ALL_USERS_QUERY, {
     pollInterval: 5000,
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
