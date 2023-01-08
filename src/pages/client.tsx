@@ -55,11 +55,9 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      {data?.users.map((user, index) => {
-        const { id, userName } = user;
-
-        return <li key={index}>{`user id is ${id}, name is ${userName}`}</li>;
-      })}
+      {data?.users.map(({ id, userName }, index) => (
+        <li key={index}>{`user id is ${id}, name is ${userName}`}</li>
+      ))}
       <div>
         <form
           onSubmit={(e) => {
@@ -69,22 +67,22 @@ export default function Home() {
         >
           <div>
             <span style={{ marginRight: '5px' }}>username</span>
-            <input type='text' name='userName' onChange={changeHandler} />
+            <input type="text" name="userName" onChange={changeHandler} />
           </div>
           <div>
             <span style={{ marginRight: '5px' }}>password</span>
-            <input type='password' name='password' onChange={changeHandler} />
+            <input type="password" name="password" onChange={changeHandler} />
           </div>
           <div>
             <span style={{ marginRight: '5px' }}>email</span>
-            <input type='email' name='email' onChange={changeHandler} />
+            <input type="email" name="email" onChange={changeHandler} />
           </div>
-          <button type='submit'>logon</button>
+          <button type="submit">logon</button>
         </form>
       </div>
 
       <div>
-        <Link href='/ssg'>go to SSG page</Link>
+        <Link href="/ssg">go to SSG page</Link>
       </div>
     </div>
   );
